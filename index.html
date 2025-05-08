@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>registratuin Form</title>
+</head>
+<body>
+    <h2>Student registration</h2>
+    <form id="regForm">
+        <input type="text" placeholder="Name" id="name" required>
+        <input type="email" placeholder="Email" id="email" required>
+        <button type="submit">Register</button>
+    </form>
+
+    <br>
+
+    <a href="./user.html">see registered users</a>
+
+    <script>
+        document.getElementById('regForm').addEventListener('submit',function(e){
+            e.preventDefault()
+
+            const name = document.getElementById('name').value
+            const email = document.getElementById('email').value
+
+            const user = {name,email}
+
+            fetch('http://localhost:3000/register',{
+                method:'POST',
+                headers: {'Content-Type':'application/json'},
+                body:JSON.stringify(user)
+            }).then(res =>res.json())
+            .then(data =>{
+                alert('User registered!')
+                localStorage.setItem('lastUser',JSON.stringify(data.user))
+                document.getElementById('regForm').reset()
+            })
+        })
+    </script>
+</body>
+</html>
